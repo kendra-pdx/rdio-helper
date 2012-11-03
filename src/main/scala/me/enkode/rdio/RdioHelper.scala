@@ -1,6 +1,7 @@
 package me.enkode.rdio
 
 import java.io.InputStreamReader
+import org.apache.commons.io.{FileUtils, IOUtils}
 
 object RdioHelper {
 	def getPIN(authUrl: String): String = {
@@ -17,8 +18,8 @@ object RdioHelper {
 	}
 
 	def main(args: Array[String]) {
-		val API_KEY = "edhrkha5zz2qyhmsj246k96u"
-		val API_SECRET = "UBcH3nFTmD"
+		val API_KEY = IOUtils.toString(getClass.getResourceAsStream("/api.key")).trim
+		val API_SECRET = IOUtils.toString(getClass.getResourceAsStream("/api.secret")).trim
 
 		val rdio = new RdioAPI(API_SECRET, API_KEY, getPIN)
 
