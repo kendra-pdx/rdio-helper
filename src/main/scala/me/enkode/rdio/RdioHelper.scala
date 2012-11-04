@@ -23,6 +23,6 @@ object RdioHelper {
 
 		val rdio = new RdioAPI(API_SECRET, API_KEY, getPIN)
 
-		println(rdio.getPlaylists)
+		println(rdio.getPlaylists.owned.map(_.name).mkString("\n"))
 	}
 }
