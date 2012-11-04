@@ -32,14 +32,22 @@ object RdioHelperUI extends SimpleSwingApplication {
 			contents += new BoxPanel(Orientation.Horizontal) {
 				contents += new Button("copy to playlists") {
 					reactions += {
-						case ButtonClicked(_) => {
+						case ButtonClicked(button) => {
 							println("copy to other playlists clicked")
 							val trackKeysToCopy: Set[String] = sourceListView.selection.items.map(_.trackKeys).flatten.toSet
 							println(trackKeysToCopy)
+							button.enabled = false
+							Futures.future {
+								destListView.selection.items.map { destPlaylist =>
+									rdio.addToPlaylist(destPlaylist.key, trackKeysToCopy -- destPlaylist.trackKeys)
+								}
+								button.enabled = true
+							}
 						}
 					}
 				}
 				contents += new Button("copy to collection") {
+					enabled = false
 					reactions += {
 						case ButtonClicked(_) => {
 							println("copy to collection clicked")

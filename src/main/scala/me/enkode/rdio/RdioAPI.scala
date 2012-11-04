@@ -1,10 +1,9 @@
 package me.enkode.rdio
 
-import model.{GetPlaylistsResponse, Playlist}
+import model.GetPlaylistsResponse
 import org.scribe.builder.ServiceBuilder
 import org.scribe.model.{Response, Verifier, Verb, OAuthRequest}
 import com.codahale.jerkson.Json
-import swing.Dialog
 
 class RdioAPI(secret: String, key: String, getPin: (String) => String) {
 	val service = new ServiceBuilder()
@@ -41,5 +40,13 @@ class RdioAPI(secret: String, key: String, getPin: (String) => String) {
 		)).getBody
 		println(body)
 		Json.parse[GetPlaylistsResponse](body).result
+	}
+
+	def addToPlaylist(playlistKey: String, trackKeys: Set[String]) {
+		val body = callMethod("addToPlaylist", Map(
+			"playlist" -> playlistKey,
+			"tracks" -> trackKeys.mkString(",")
+		)).getBody
+		println(body)
 	}
 }
